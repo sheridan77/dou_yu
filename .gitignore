@@ -1,0 +1,12 @@
+venv
+
+*.json
+*.log
+
+test.py
+
+.idea
+
+
+
+
