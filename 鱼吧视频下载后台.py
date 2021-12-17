@@ -1,14 +1,10 @@
 import logging
-import time
-import requests
-from concurrent_log_handler import ConcurrentRotatingFileHandler
 from logging import handlers
-from douyu_api.stream import StreamClient
-from douyu_api.room import RoomClient
-
-# TASKS = {"312212": None, "911": None, "3125893": None, "290935": None}
+from douyu_api.video import VideoClient
+from concurrent_log_handler import ConcurrentRotatingFileHandler
+import time
 TASKS = {
-    "jNBdvnV0gVZvE2yw": None,
+    "85": None,
     # "7672892": None,
     # "9597209": None,
     # "4521568": None
@@ -78,19 +74,18 @@ def init_logger(
 
 def main():
     while True:
-        for room_id in TASKS:
-            if not TASKS.get(room_id):
-                stream_client = StreamClient(room_id=room_id)
-                TASKS[room_id] = stream_client
-                stream_client.start()
+        for video_id in TASKS:
+            if not TASKS.get(video_id):
+                video_client = VideoClient(video_id=video_id)
+                TASKS[video_id] = video_client
+                video_client.start()
             else:
-                stream_client = TASKS[room_id]
+                video_client = TASKS[video_id]
 
-            if stream_client.running:
+            if video_client.running:
                 logger.info("视频正在下载")
             else:
-                stream_client.start()
-
+                video_client.start()
         time.sleep(60)
 
 
@@ -106,3 +101,5 @@ if __name__ == '__main__':
         main()
     except Exception as e:
         print(e)
+
+
